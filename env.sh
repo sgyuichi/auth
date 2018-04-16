@@ -1,0 +1,2 @@
+MONGO_URL=mongo
+PORT=5555
