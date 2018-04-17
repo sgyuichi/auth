@@ -1,15 +1,16 @@
 'use strict';
-
-
 var mongoose = require('mongoose'),
-  User = mongoose.model('users');
+  mongo = require('../mongo/mongo');
 
-exports.login = function(req, res) {
-  console.log(req.body);
-  var new_task = new User(req.body);
-  new_task.save(function(err, task) {
-    if (err)
-      res.send(err);
-    res.json(task);
+
+var createUser = function(req, res) {
+  mongo.insertUser(req.body, function(user) {
+    res.json(user);
+  }, function(err) {
+    res.send(err);
   });
 };
+
+module.exports = {
+  createUser: createUser
+}
