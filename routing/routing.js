@@ -4,4 +4,16 @@ module.exports = function(app) {
 
   app.route('/users')
     .post(manager.createUser);
+
+  app.route('/login')
+    .post(manager.login);
+
+  app.route('/logout')
+    .post(manager.logout);
+
+  app.route('/refresh')
+    .patch(manager.refresh);
+
+  app.route('/authenticate')
+    .get(manager.authenticate);
 };
