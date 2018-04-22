@@ -1,16 +1,24 @@
 'use strict';
 var mongoose = require('mongoose'),
-  mongo = require('../mongo/mongo');
+  oauth = require('../mongo/oauth_model');
 
 
 var createUser = function(req, res) {
-  mongo.insertUser(req.body, function(user) {
+  oauth.register(req.body, function(user) {
     res.json(user);
   }, function(err) {
     res.send(err);
   });
 };
 
+var login = function (registerUserQuery, res) {
+  console.log("login");
+  console.log(registerUserQuery);
+  console.log(res);
+  res.send(res);
+}
+
 module.exports = {
-  createUser: createUser
+  createUser: createUser,
+  login: login
 }
