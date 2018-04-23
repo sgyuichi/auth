@@ -1,6 +1,7 @@
 'use strict';
 module.exports = function(app) {
   var manager = require('../manager/manager');
+  var errors = require('../manager/errors');
 
   app.route('/users')
     .post(manager.createUser);
@@ -16,4 +17,7 @@ module.exports = function(app) {
 
   app.route('/authenticate')
     .get(manager.authenticate);
+
+  app.route('*')
+    .all(errors.returnPageNotFoundError);
 };
