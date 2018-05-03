@@ -7,7 +7,12 @@ const mongoose = require('mongoose'),
   PasswordHash = require('password-hash');
 
 var createUser = function(req, res) {
-  req.body.password = PasswordHash.generate(req.body.password);
+  try {
+    req.body.password = PasswordHash.generate(req.body.password);
+  } catch(err) {
+    errors.returnInternalError(req, res, err);
+    return;
+  }
   mongo.insertUser(req.body, function(user) {
     res.json(user);
   }, function(err) {
@@ -22,13 +27,13 @@ var login = function(req, res) {
         return;
       }
       if (!PasswordHash.verify(req.body.password, user.password)) {
-        errors.returnBadRequestError(res, 'Incorrect password')
+        errors.returnBadRequestError(req, res, 'Incorrect password')
         return;
       }
       user.token = uidgen.generateSync();
       user.expiration_date = Date.now() + 3600*4;
       mongo.updateUserbyID(user, function() {
-        res.json(user);
+        res.json({token: user.token});
       }, function(err) {
         errors.returnInternalError(req, res, err);
       });
@@ -43,7 +48,7 @@ var logout = function(req, res) {
         errors.returnUnauthorizedError(req, res, 'Invalid Token');
         return;
       }
-      user.token = ""
+      user.token = "";
       user.expiration_date = 0;
       mongo.updateUserbyID(user, function() {
         res.json({});

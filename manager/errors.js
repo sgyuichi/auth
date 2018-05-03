@@ -1,4 +1,4 @@
-var returnNotFoundError = function(err,req, res) {
+var returnNotFoundError = function(req, res, err) {
   res.status(404);
   res.json({
     code: 404,
@@ -43,10 +43,20 @@ var returnBadRequestError = function(req, res, err) {
   });
 }
 
+var returnBadRequestErrors = function(req, res, errs) {
+  res.status(400);
+  res.json({
+    code: 400,
+    message: "Bad Request",
+    errors: errs
+  });
+}
+
 module.exports = {
   returnNotFoundError: returnNotFoundError,
   returnUnauthorizedError: returnUnauthorizedError,
   returnInternalError: returnInternalError,
   returnBadRequestError: returnBadRequestError,
+  returnBadRequestErrors: returnBadRequestErrors,
   returnPageNotFoundError: returnPageNotFoundError
 }
