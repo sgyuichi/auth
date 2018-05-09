@@ -1,20 +1,19 @@
-var express = require('express'),
-  app = express(),
-  port = process.env.PORT || 5000,
-  mongoose = require('mongoose'),
-  Users = require('./mongo/mongo'),
-  bodyParser = require('body-parser'),
-  validator = require('express-validator');
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 5000;
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const validator = require('express-validator');
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/moneymind');
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(validator());
 
-var routes = require('./routing/routing'); //importing route
-routes(app); //register the route
+let routes = require('./routing/routing'); // importing route
+routes(app); // register the route
 
 
 app.listen(port);
